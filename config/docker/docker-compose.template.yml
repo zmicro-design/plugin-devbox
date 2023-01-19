@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   <TEMPLATE_DEV_BOX_NAME>:
     restart: always
