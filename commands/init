@@ -1,0 +1,38 @@
+#!/bin/bash
+
+help() {
+  echo "Usage:"
+  echo "  devbox init"
+  echo ""
+  echo "Options:"
+  echo "  --recreate       Recreate the init"
+}
+
+core() {
+  if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    help
+    exit 0
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    local key=$1
+    local value=$2
+    case $key in
+    --renew)
+      var::set PLUGIN_DEVBOX_INIT_FORCE true
+      shift
+      ;;
+    *)
+      log::error "unknown options $key"
+      ;;
+    esac
+  done
+
+  devbox::init
+}
+
+run() {
+  core "$@"
+}
+
+run "$@"

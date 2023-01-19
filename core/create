@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# devbox::create create a new dev environment.
+devbox::create() {
+  local name="$1"
+
+  local err_log="$(os::tmp_file)"
+  local service_dir="$PLUGIN_DEVBOX_SERVICES_DIR/$name"
+  local service_name="${PLUGIN_DEVBOX_INIT_SERVICE_NAME_PREFIX}${name}"
+  local service_docker_compose=${service_dir}/docker-compose.yml
+
+  if [ -d "$service_dir" ]; then
+    if [ "$name" != "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+      if [ "$name" != "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+        log::error "[$(timestamp)] devbox exist before: $name."
+      else
+        log::error "[$(timestamp)] devbox initialized before."
+      fi
+      return 1
+    fi
+  fi
+
+  if [ ! -d "$service_dir" ]; then
+    sudo mkdir -p $service_dir
+  fi
+
+  if [ ! -w "$service_dir" ]; then
+    sudo chown -R $USER $service_dir
+  fi
+
+  cd $service_dir
+
+  if [ ! -f "$service_docker_compose" ] || [ "$PLUGIN_DEVBOX_CREATE_FORCE" = "true" ]; then
+    if [ "$name" != "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+      log::info "[$(timestamp)] start to create new devbox: $name ..."
+    else
+      log::info "[$(timestamp)] start to create init devbox ..."
+    fi
+
+    # @TODO ensure old service down
+    docker-compose down >>/dev/null 2>&1
+
+    cat $PLUGIN_DEVBOX_DOCKER_COMPOSE_TEMPLATE |
+      sed "s/<TEMPLATE_DEV_BOX_NAME>/${service_name}/g" |
+      sed "s/<DOMAIN>/${DOMAIN}/g" |
+      sed "s%<ROOT_URL>%${ROOT_URL}%g" \
+        >$service_docker_compose
+  else
+    docker-compose ps | grep $service_name >>/dev/null 2>$err_log
+    if [ "$?" = "0" ]; then
+      # service up already
+      log::info "[$(timestamp)] devbox created before."
+      return 0
+    fi
+  fi
+
+  docker-compose up -d # >>/dev/null 2>$err_log
+  if [ "$?" != "0" ]; then
+    if [ "$name" != "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+      log::error "[$(timestamp)] failed to create devbox: $name."
+    else
+      log::error "[$(timestamp)] failed to create init devbox."
+    fi
+    # cat $err_log
+    return 1
+  fi
+
+  if [ "$name" != "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+    log::success "[$(timestamp)] succeed to create devbox: $name."
+  else
+    log::success "[$(timestamp)] succeed to create init devbox."
+  fi
+}
+
+export -f devbox::create

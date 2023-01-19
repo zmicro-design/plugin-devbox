@@ -1,0 +1,42 @@
+#!/bin/bash
+
+help() {
+  echo "Usage:"
+  echo "  devbox add <language> [env]"
+  echo ""
+  echo "Avail languages:"
+  echo "  nodejs"
+  echo "  go"
+  echo "  python"
+  echo "  deno"
+  echo "  rust"
+  echo "  java"
+}
+
+core() {
+  if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    help
+    exit 0
+  fi
+
+  local language="$1"
+  local env_name="$2"
+
+  if [ -z "$language" ]; then
+    log::error "[$(timestamp)] language is required"
+    help
+    return 1
+  fi
+
+  if [ -z "$env_name" ]; then
+    env_name="$PLUGIN_DEVBOX_INIT_NAME"
+  fi
+
+  devbox::add "$env_name" "$language"
+}
+
+run() {
+  core "$@"
+}
+
+run "$@"

@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  <TEMPLATE_DEV_BOX_NAME>:
+    restart: always
+    image: ${PLUGIN_DEVBOX_INIT_SERVICE_IMAGE}
+    command: sleep infinity
+    # environment:
+    #   PROMPT: '%F{blue}%1~%f %# '
+
+networks:
+  default:
+    external: true
+    name: $PLUGIN_DEVBOX_INIT_SERVICE_NETWORK
+    

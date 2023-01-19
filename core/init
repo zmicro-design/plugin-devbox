@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# devbox::init initializes env
+devbox::init() {
+  log::info "[$(timestamp)] devbox init ..."
+
+  devbox::create $PLUGIN_DEVBOX_INIT_NAME
+  if [ "$?" != "0" ]; then
+    log::error "[$(timestamp)] failed to init devbox."
+    return 1
+  fi
+
+  log::success "[$(timestamp)] succeed to init devbox."
+}
+
+export -f devbox::init

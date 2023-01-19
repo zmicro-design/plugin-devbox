@@ -1,0 +1,42 @@
+#!/bin/bash
+
+name() {
+  local version=$(plugin::get_version $PLUGIN_DEVBOX_NAME)
+  echo "Instant, easy, and predictable development environments ($(color::success $version))"
+}
+
+description() {
+  echo "DEVBOX is a tool for managing virtual machines, based on multipass and lima."
+}
+
+usage() {
+  echo "Usage:"
+  echo "  devbox start <name>         - Start a virtual machine"
+  echo "  devbox stop <name>          - Stop a virtual machine"
+  echo "  devbox restart <name>       - Restart a virtual machine"
+  echo "  devbox remove <name>        - Remove a virtual machine"
+  echo "  devbox exec <name>          - Connect shell to a virtual machine"
+  echo "  devbox inspect <name>       - Inspect a virtual machine"
+  echo "  devbox help                 - Show help"
+}
+
+example() {
+  echo "Example:"
+  echo "  devbox start test01"
+}
+
+core() {
+  name
+  echo ""
+  description
+  echo ""
+  usage
+  echo ""
+  example
+}
+
+run() {
+  core $@
+}
+
+run $@

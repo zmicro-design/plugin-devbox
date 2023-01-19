@@ -1,0 +1,26 @@
+#!/bin/bash
+
+help() {
+  echo "Usage:"
+  echo "  devbox shell [name]"
+}
+
+core() {
+  if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    help
+    exit 0
+  fi
+
+  local name="$1"
+  if [ -z "$name" ]; then
+    name="$PLUGIN_DEVBOX_INIT_NAME"
+  fi
+
+  devbox::shell "$name"
+}
+
+run() {
+  core $@
+}
+
+run $@

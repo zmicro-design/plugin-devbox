@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# devbox::add add a new language package to your devbox.
+devbox::add() {
+  local name="$1"
+  local language="$2"
+  local service_name="${PLUGIN_DEVBOX_INIT_SERVICE_NAME_PREFIX}${name}"
+
+  log::info "[$(timestamp)] devbox add language: $language => env($name) ..."
+
+  if [ ! -d "$PLUGIN_DEVBOX_INIT_DIR" ]; then
+    sudo mkdir -p $PLUGIN_DEVBOX_INIT_DIR
+  fi
+
+  if [ ! -w "$PLUGIN_DEVBOX_INIT_DIR" ]; then
+    sudo chown -R $USER $PLUGIN_DEVBOX_INIT_DIR
+  fi
+
+  cd $PLUGIN_DEVBOX_INIT_DIR
+
+  local errlog="$(os::tmp_file)"
+  log::debug "[$(timestamp)] cmd: docker-compose exec $service_name \"zmicro package install $language\""
+  docker-compose exec $service_name sh -c "zmicro package install $language"
+}
+
+export -f devbox::add

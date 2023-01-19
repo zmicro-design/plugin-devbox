@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# devbox::remove removes a new dev environment.
+devbox::remove() {
+  local name="$1"
+
+  local err_log="$(os::tmp_file)"
+  local service_dir="$PLUGIN_DEVBOX_SERVICES_DIR/$name"
+  local service_name="${PLUGIN_DEVBOX_INIT_SERVICE_NAME_PREFIX}${name}"
+  local service_docker_compose=${service_dir}/docker-compose.yml
+
+  if [ ! -d "$service_dir" ]; then
+    log::info "[$(timestamp)] devbox($name) removed before."
+    return 0
+  fi
+
+  cd $service_dir
+
+  # remove service
+  docker-compose down --remove-orphans # >>/dev/null 2>$err_log
+  if [ "$?" != "0" ]; then
+    log::error "[$(timestamp)] failed to remove devbox: $name."
+    # cat $err_log
+    return 1
+  fi
+
+  # remove files
+  rm -rf $service_dir
+
+  log::success "[$(timestamp)] succeed to remove devbox: $name."
+}
+
+export -f devbox::remove

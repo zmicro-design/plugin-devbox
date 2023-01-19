@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# devbox::shell start a new shell or run a command with access to your packages
+devbox::shell() {
+  local name="$1"
+  local service_shell="$2"
+  local service_dir="$PLUGIN_DEVBOX_SERVICES_DIR/$name"
+  local service_name="${PLUGIN_DEVBOX_INIT_SERVICE_NAME_PREFIX}${name}"
+
+  if [ -z "$service_shell" ]; then
+    service_shell="$PLUGIN_DEVBOX_INIT_SERVICE_SHELL"
+  fi
+
+  if [ "$name" != "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+    log::info "[$(timestamp)] devbox shell => $name ..."
+  else
+    log::info "[$(timestamp)] devbox shell ..."
+  fi
+
+  if [ ! -d "$service_dir" ]; then
+    if [ "$name" = "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+      devbox::init
+    else
+      log::error "[$(timestamp)] devbox($name) not found."
+      return 1
+    fi
+  fi
+
+  cd $service_dir
+
+  local errlog="$(os::tmp_file)"
+  log::debug "[$(timestamp)] cmd: docker-compose exec $service_name $service_shell"
+  docker-compose exec $service_name $service_shell
+}
+
+export -f devbox::shell

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# devbox::list lists all devboxes.
+devbox::list() {
+  local devboxes=$(ls $PLUGIN_DEVBOX_SERVICES_DIR)
+  local count=0
+  for name in $devboxes; do
+    count=$((count + 1))
+  done
+
+  log "  total: $(color::success $count) (includes init)"
+  log ""
+
+  local index=0
+  for name in $devboxes; do
+    index=$(number::step index)
+
+    if [ "$name" = "$PLUGIN_DEVBOX_INIT_NAME" ]; then
+      log "    ${index} init $(color::success "[builtin]")"
+    else
+      log "    ${index} $name"
+    fi
+  done
+}
+
+export -f devbox::list

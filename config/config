@@ -1,0 +1,39 @@
+export PLUGIN_DEVBOX_NAME=devbox
+
+export PLUGIN_DEVBOX_DATA=$(plugin::get_app_data_path $PLUGIN_DEVBOX_NAME)
+export PLUGIN_DEVBOX_LOGS=$(plugin::get_app_logs_path $PLUGIN_DEVBOX_NAME)
+export PLUGIN_DEVBOX_CONFIG=$(plugin::get_app_configs_path $PLUGIN_DEVBOX_NAME)/config
+
+export PLUGIN_DEVBOX_DOCKER_COMPOSE_TEMPLATE=$PLUGIN_DIR/config/docker/docker-compose.template.yml
+export PLUGIN_DEVBOX_SERVICES_DIR=$PLUGIN_DEVBOX_DATA/services
+
+export PLUGIN_DEVBOX_INIT_DIR=$PLUGIN_DEVBOX_DATA/__init
+export PLUGIN_DEVBOX_INIT_NAME="__init"
+export PLUGIN_DEVBOX_INIT_SERVICE_NAME_PREFIX="zmicro_devbox_instance_"
+export PLUGIN_DEVBOX_INIT_SERVICE_IMAGE="whatwewant/workspace:v1"
+export PLUGIN_DEVBOX_INIT_SERVICE_NAME="${PLUGIN_DEVBOX_INIT_SERVICE_NAME_PREFIX}${PLUGIN_DEVBOX_INIT_NAME}"
+export PLUGIN_DEVBOX_INIT_SERVICE_NETWORK="zmicro_devbox"
+# export PLUGIN_DEVBOX_INIT_DOCKER_COMPOSE=$PLUGIN_DEVBOX_INIT_DIR/docker-compose.yml
+export PLUGIN_DEVBOX_INIT_SERVICE_SHELL="zsh"
+export PLUGIN_DEVBOX_INIT_FORCE="false"
+
+if [ "$(os::has_command docker)" != "true" ]; then
+  zmicro package install docker
+fi
+
+if [ "$(os::has_command docker-compose)" != "true" ]; then
+  zmicro package install docker-compose
+fi
+
+docker network ls | grep $PLUGIN_DEVBOX_INIT_SERVICE_NETWORK >>/dev/null
+if [ "$?" != "0" ]; then
+  docker network create $PLUGIN_DEVBOX_INIT_SERVICE_NETWORK >>/dev/null
+fi
+
+if [ ! -d "$PLUGIN_DEVBOX_SERVICES_DIR" ]; then
+  sudo mkdir -p $PLUGIN_DEVBOX_SERVICES_DIR
+fi
+
+if [ ! -w "$PLUGIN_DEVBOX_SERVICES_DIR" ]; then
+  sudo chown -R $USER $PLUGIN_DEVBOX_SERVICES_DIR
+fi
