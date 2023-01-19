@@ -11,18 +11,21 @@ description() {
 
 usage() {
   echo "Usage:"
-  echo "  devbox start <name>         - Start a virtual machine"
-  echo "  devbox stop <name>          - Stop a virtual machine"
-  echo "  devbox restart <name>       - Restart a virtual machine"
-  echo "  devbox remove <name>        - Remove a virtual machine"
-  echo "  devbox exec <name>          - Connect shell to a virtual machine"
-  echo "  devbox inspect <name>       - Inspect a virtual machine"
+  echo "  devbox init                 - Initialize a directory as a devbox project"
+  echo "  devbox add <language>       - Add a language, such as nodejs,go,rust,python,java,deno"
+  echo "  devbox shell <name>         - Start a new shell or run a command with access to your packages"
+  echo "  devbox create <name>        - Create a new devbox"
+  echo "  devbox remove <name>        - Remove a devbox"
+  echo "  devbox ls                   - List all devboxes"
+  echo "  devbox inspect <name>       - Inspect a dexbox"
   echo "  devbox help                 - Show help"
 }
 
 example() {
   echo "Example:"
-  echo "  devbox start test01"
+  echo "  devbox init"
+  echo "  devbox add nodejs"
+  echo "  devbox shell"
 }
 
 core() {

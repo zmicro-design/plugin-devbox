@@ -25,21 +25,24 @@ wget -qO- https://raw.githubusercontent.com/zmicro-design/plugin-devbox/master/i
 ## Usage
 
 ```markdown
-Virtual Machine Manager (v1.0.3)
+Instant, easy, and predictable development environments (v1.0.2)
 
 DEVBOX is a tool for managing virtual machines, based on multipass and lima.
 
 Usage:
-  devbox start <name>         - Start a virtual machine
-  devbox stop <name>          - Stop a virtual machine
-  devbox restart <name>       - Restart a virtual machine
-  devbox remove <name>        - Remove a virtual machine
-  devbox exec <name>          - Connect shell to a virtual machine
-  devbox inspect <name>       - Inspect a virtual machine
+  devbox init                 - Initialize a directory as a devbox project
+  devbox add <language>       - Add a language, such as nodejs,go,rust,python,java,deno
+  devbox shell <name>         - Start a new shell or run a command with access to your packages
+  devbox create <name>        - Create a new devbox
+  devbox remove <name>        - Remove a devbox
+  devbox ls                   - List all devboxes
+  devbox inspect <name>       - Inspect a dexbox
   devbox help                 - Show help
 
 Example:
-  devbox start test01
+  devbox init
+  devbox add nodejs
+  devbox shell
 ```
 
 ## License
