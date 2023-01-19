@@ -25,9 +25,9 @@ wget -qO- https://raw.githubusercontent.com/zmicro-design/plugin-devbox/master/i
 ## Usage
 
 ```markdown
-Instant, easy, and predictable development environments (v1.0.2)
+DevBox (v1.0.3)
 
-DEVBOX is a tool for managing virtual machines, based on multipass and lima.
+Instant, easy, and predictable development environments.
 
 Usage:
   devbox init                 - Initialize a directory as a devbox project

@@ -2,11 +2,11 @@
 
 name() {
   local version=$(plugin::get_version $PLUGIN_DEVBOX_NAME)
-  echo "Instant, easy, and predictable development environments ($(color::success $version))"
+  echo "DevBox ($(color::success $version))"
 }
 
 description() {
-  echo "DEVBOX is a tool for managing virtual machines, based on multipass and lima."
+  echo "Instant, easy, and predictable development environments."
 }
 
 usage() {
