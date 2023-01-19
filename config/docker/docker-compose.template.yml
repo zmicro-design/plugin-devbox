@@ -3,8 +3,11 @@ services:
     restart: always
     image: ${PLUGIN_DEVBOX_INIT_SERVICE_IMAGE}
     command: sleep infinity
-    # environment:
-    #   PROMPT: '%F{blue}%1~%f %# '
+    environment:
+      # oh-my-zsh
+      # PROMPT: "[devbox] $PROMPT"
+      # bash
+      PS1: "[devbox] $PS1"
 
 networks:
   default:
