@@ -20,6 +20,7 @@ core() {
     case $key in
     --renew |  --force)
       var::set PLUGIN_DEVBOX_INIT_FORCE true
+      var::set PLUGIN_DEVBOX_CREATE_FORCE true
       shift
       ;;
     *)
