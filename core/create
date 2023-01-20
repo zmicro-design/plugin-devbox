@@ -43,7 +43,7 @@ devbox::create() {
 
     cat $PLUGIN_DEVBOX_DOCKER_COMPOSE_TEMPLATE |
       sed "s/<TEMPLATE_DEV_BOX_NAME>/${service_name}/g" |
-      sed "s/<TEMPLATE_DEV_BOX_DATA_DIR>/${code_dir}/g" |
+      sed "s%<TEMPLATE_DEV_BOX_DATA_DIR>%${code_dir}%g" |
       sed "s/<DOMAIN>/${DOMAIN}/g" |
       sed "s%<ROOT_URL>%${ROOT_URL}%g" \
         >$service_docker_compose
