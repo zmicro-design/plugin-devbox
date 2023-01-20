@@ -8,6 +8,8 @@ services:
       # PROMPT: "[devbox] $PROMPT"
       # bash
       PS1: "[devbox] $PS1"
+    volumes:
+      - <TEMPLATE_DEV_BOX_DATA_DIR>:/home/workspace/code
 
 networks:
   default:

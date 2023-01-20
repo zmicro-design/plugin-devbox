@@ -4,7 +4,7 @@
 devbox::init() {
   log::info "[$(timestamp)] devbox init ..."
 
-  devbox::create $PLUGIN_DEVBOX_INIT_NAME
+  devbox::create $PLUGIN_DEVBOX_INIT_NAME $PLUGIN_DATA/$PLUGIN_DEVBOX_INIT_NAME
   if [ "$?" != "0" ]; then
     log::error "[$(timestamp)] failed to init devbox."
     return 1

@@ -3,6 +3,7 @@
 # devbox::create create a new dev environment.
 devbox::create() {
   local name="$1"
+  local code_dir="$2"
 
   local err_log="$(os::tmp_file)"
   local service_dir="$PLUGIN_DEVBOX_SERVICES_DIR/$name"
@@ -42,6 +43,7 @@ devbox::create() {
 
     cat $PLUGIN_DEVBOX_DOCKER_COMPOSE_TEMPLATE |
       sed "s/<TEMPLATE_DEV_BOX_NAME>/${service_name}/g" |
+      sed "s/<TEMPLATE_DEV_BOX_DATA_DIR>/${code_dir}/g" |
       sed "s/<DOMAIN>/${DOMAIN}/g" |
       sed "s%<ROOT_URL>%${ROOT_URL}%g" \
         >$service_docker_compose

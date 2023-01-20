@@ -2,7 +2,7 @@
 
 help() {
   echo "Usage:"
-  echo "  devbox create <name>"
+  echo "  devbox create <name> <code_dir>"
 }
 
 core() {
@@ -12,12 +12,18 @@ core() {
   fi
 
   local name=$1
+  local code_dir=$2
+
   if [ -z "$name" ]; then
     log::error "[$(timestamp)] name is required"
     exit 1
   fi
 
-  devbox::create $name
+  if [ -z "$code_dir" ]; then
+    os::inquirer code_dir "text" "You code directory?" true
+  fi
+
+  devbox::create $name $code_dir
 }
 
 run() {
