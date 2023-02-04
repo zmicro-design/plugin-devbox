@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# devbox::remove removes a new dev environment.
-devbox::remove() {
+# devbox::stop stops a new dev environment.
+devbox::stop() {
   local name="$1"
   if [ -z "$name" ]; then
     log::error "[$(timestamp)] name is required"
@@ -14,24 +14,21 @@ devbox::remove() {
   local service_docker_compose=${service_dir}/docker-compose.yml
 
   if [ ! -d "$service_dir" ]; then
-    log::info "[$(timestamp)] devbox($name) removed before."
+    log::info "[$(timestamp)] devbox($name) stopped before."
     return 0
   fi
 
   cd $service_dir
 
-  # remove service
+  # stop service
   docker-compose down --remove-orphans # >>/dev/null 2>$err_log
   if [ "$?" != "0" ]; then
-    log::error "[$(timestamp)] failed to remove devbox: $name."
+    log::error "[$(timestamp)] failed to stop devbox: $name."
     # cat $err_log
     return 1
   fi
 
-  # remove files
-  rm -rf $service_dir
-
-  log::success "[$(timestamp)] succeed to remove devbox: $name."
+  log::success "[$(timestamp)] succeed to stop devbox: $name."
 }
 
-export -f devbox::remove
+export -f devbox::stop

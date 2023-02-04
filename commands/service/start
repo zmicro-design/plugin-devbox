@@ -2,7 +2,7 @@
 
 help() {
   echo "Usage:"
-  echo "  devbox remove <name>"
+  echo "  devbox service start <name>"
 }
 
 core() {
@@ -17,7 +17,7 @@ core() {
     os::inquirer name "select" options "Select an service ?" true
   fi
 
-  devbox::remove $name
+  devbox::start $name
 }
 
 run() {

@@ -2,7 +2,7 @@
 
 help() {
   echo "Usage:"
-  echo "  devbox remove <name>"
+  echo "  devbox service stop <name>"
 }
 
 core() {
@@ -13,11 +13,11 @@ core() {
 
   local name=$1
   if [ -z "$name" ]; then
-    local options=($(dexbox::list))
+    local options=($(devbox::list))
     os::inquirer name "select" options "Select an service ?" true
   fi
 
-  devbox::remove $name
+  devbox::stop $name
 }
 
 run() {

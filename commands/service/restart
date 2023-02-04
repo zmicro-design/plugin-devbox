@@ -2,7 +2,7 @@
 
 help() {
   echo "Usage:"
-  echo "  devbox remove <name>"
+  echo "  devbox service start <name>"
 }
 
 core() {
@@ -17,7 +17,13 @@ core() {
     os::inquirer name "select" options "Select an service ?" true
   fi
 
-  devbox::remove $name
+  devbox::stop $name
+  if [ "$?" != "0" ]; then
+    log::error "[$(timestamp)] failed to restart by stop error."
+    return 1
+  fi
+
+  devbox::start $name
 }
 
 run() {
