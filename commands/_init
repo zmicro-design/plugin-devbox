@@ -1,0 +1,28 @@
+#!/bin/bash
+
+prepare() {
+  if [ "$(os::has_command docker)" != "true" ]; then
+    log::info "[$(timestamp)] installing docker-cli ..."
+    zmicro package install docker-cli
+  fi
+
+  if [ "$(os::has_command docker-compose)" != "true" ]; then
+    log::info "[$(timestamp)] installing docker-compose ..."
+    zmicro package install docker-compose
+  fi
+
+  if [ "$(os::is_macos)" = "true" ]; then
+    if [ "$(os::has_command colima)" != "true" ]; then
+      log::info "[$(timestamp)] installing colima in MacOS ..."
+      zmicro package install colima
+
+      log::info "[$(timestamp)] starting docker daemon with colima in MacOS ..."
+      zmicro colima start
+
+      log::info "[$(timestamp)] show docker info ..."
+      docker info
+    fi
+  fi
+}
+
+prepare
